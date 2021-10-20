@@ -1,0 +1,7 @@
+= https://novelgame.jp/fes2021/[Tyrano Game Fes 2021] Scraper
+
+ティラノフェス２０２１ 参加作品
+
+* https://novelgame.jp/player/fes
+
+を総覧するためのアプリケーションです。
