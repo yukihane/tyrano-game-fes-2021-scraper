@@ -1,22 +1,32 @@
-use anyhow::Result;
 use easy_scraper::Pattern;
-use std::fs;
+use std::collections::BTreeMap;
+use std::fs::{self, File};
+use std::io::BufReader;
 use std::path::Path;
 
-pub fn fetch_data() -> Result<()> {
+pub fn fetch_data() -> anyhow::Result<Vec<BTreeMap<String, String>>> {
   let data_dir = Path::new("data");
   let data_file = data_dir.join("data.json");
 
-  if data_file.exists() {
-    return Ok(());
+  if !data_file.exists() {
+    fs::create_dir_all(data_dir)?;
   }
 
-  fs::create_dir_all(data_dir)?;
-
-  Ok(())
+  if data_file.exists() {
+    println!("read from file");
+    let file = File::open(data_file)?;
+    let reader = BufReader::new(file);
+    let contents = serde_json::from_reader::<_, Vec<BTreeMap<String, String>>>(reader)?;
+    Ok(contents)
+  } else {
+    let contents = fetch_remote_data()?;
+    let serialized = serde_json::to_string(&contents)?;
+    fs::write(data_file, serialized)?;
+    Ok(contents)
+  }
 }
 
-pub fn fetch_remote_data() -> anyhow::Result<()> {
+pub fn fetch_remote_data() -> anyhow::Result<Vec<BTreeMap<String, String>>> {
   let content_pattern: Pattern = Pattern::new(
     r#"
 <div class="card border-0">
@@ -40,7 +50,6 @@ pub fn fetch_remote_data() -> anyhow::Result<()> {
   .unwrap();
 
   let text = reqwest::blocking::get("https://novelgame.jp/player/fes")?.text()?;
-  let ms = content_pattern.matches(&text);
 
-  Ok(())
+  Ok(content_pattern.matches(&text))
 }

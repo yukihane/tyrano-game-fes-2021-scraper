@@ -1,5 +1,6 @@
-use app::init::fetch_remote_data;
+use app::init::fetch_data;
 
 fn main() {
-  let _ = fetch_remote_data();
+  let contents = fetch_data().unwrap();
+  println!("{:?}", contents);
 }
