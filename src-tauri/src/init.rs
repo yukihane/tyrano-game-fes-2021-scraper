@@ -42,7 +42,5 @@ pub fn fetch_remote_data() -> anyhow::Result<()> {
   let text = reqwest::blocking::get("https://novelgame.jp/player/fes")?.text()?;
   let ms = content_pattern.matches(&text);
 
-  println!("result: {:?}", ms);
-
   Ok(())
 }
