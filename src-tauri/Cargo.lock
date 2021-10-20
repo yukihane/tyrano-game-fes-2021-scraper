@@ -43,6 +43,7 @@ name = "app"
 version = "0.1.0"
 dependencies = [
  "anyhow",
+ "easy-scraper",
  "reqwest",
  "serde",
  "serde_json",
@@ -715,6 +716,17 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "bde03329ae10e79ede66c9ce4dc930aa8599043b0743008548680f25b91502d6"
 dependencies = [
  "dtoa",
+]
+
+[[package]]
+name = "easy-scraper"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "18a857bc01b5ae04874234f6b5d16b8b8fa86910aa5777479c2669b5df607fce"
+dependencies = [
+ "html5ever",
+ "kuchiki",
+ "regex",
 ]
 
 [[package]]
